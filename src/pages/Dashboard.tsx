@@ -7,13 +7,14 @@ import StreamKey from '@/components/streaming/StreamKey';
 import StreamStatus from '@/components/streaming/StreamStatus';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Separator } from '@/components/ui/separator';
 import { Link2, Settings, Info, ExternalLink } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('stream');
+  const { t } = useLanguage();
 
   const copyIngestUrl = () => {
     navigator.clipboard.writeText('rtmp://ingest.rtmpstream.io/live');
@@ -29,18 +30,18 @@ const Dashboard = () => {
       <main className="flex-1 pt-28 pb-16 px-4">
         <div className="container max-w-5xl mx-auto">
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-2xl md:text-3xl font-bold">Streaming Dashboard</h1>
+            <h1 className="text-2xl md:text-3xl font-bold">{t('dashboard.title')}</h1>
             <Button variant="outline" size="sm" onClick={() => navigate('/settings')}>
               <Settings className="h-4 w-4 mr-2" />
-              Settings
+              {t('nav.settings')}
             </Button>
           </div>
           
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="mb-6">
-              <TabsTrigger value="stream">Stream</TabsTrigger>
-              <TabsTrigger value="analytics">Analytics</TabsTrigger>
-              <TabsTrigger value="destinations">Destinations</TabsTrigger>
+              <TabsTrigger value="stream">{t('dashboard.tabs.stream')}</TabsTrigger>
+              <TabsTrigger value="analytics">{t('dashboard.tabs.analytics')}</TabsTrigger>
+              <TabsTrigger value="destinations">{t('dashboard.tabs.destinations')}</TabsTrigger>
             </TabsList>
             
             <TabsContent value="stream" className="animate-fade-in">
@@ -49,7 +50,7 @@ const Dashboard = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <GlassCard className="flex flex-col h-full">
-                    <h3 className="font-medium text-lg mb-4">RTMP Server URL</h3>
+                    <h3 className="font-medium text-lg mb-4">{t('dashboard.rtmp.title')}</h3>
                     <div className="flex items-center gap-2 mb-4">
                       <div className="bg-background/50 text-sm font-mono p-3 rounded-md flex-1 break-all">
                         rtmp://ingest.rtmpstream.io/live
@@ -64,12 +65,12 @@ const Dashboard = () => {
                       </Button>
                     </div>
                     <p className="text-sm text-muted-foreground mt-auto">
-                      Use this URL in your broadcasting software along with your stream key.
+                      {t('dashboard.rtmp.description')}
                     </p>
                   </GlassCard>
                   
                   <GlassCard className="flex flex-col h-full">
-                    <h3 className="font-medium text-lg mb-4">Streaming Software</h3>
+                    <h3 className="font-medium text-lg mb-4">{t('dashboard.software.title')}</h3>
                     <ul className="space-y-3 mb-4">
                       <li className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded bg-background/50 flex items-center justify-center">
@@ -81,7 +82,7 @@ const Dashboard = () => {
                         </div>
                         <Button size="sm" variant="outline" className="flex gap-1.5 items-center">
                           <ExternalLink className="h-3.5 w-3.5" />
-                          <span>Guide</span>
+                          <span>{t('dashboard.guide')}</span>
                         </Button>
                       </li>
                       
@@ -95,7 +96,7 @@ const Dashboard = () => {
                         </div>
                         <Button size="sm" variant="outline" className="flex gap-1.5 items-center">
                           <ExternalLink className="h-3.5 w-3.5" />
-                          <span>Guide</span>
+                          <span>{t('dashboard.guide')}</span>
                         </Button>
                       </li>
                       
@@ -109,7 +110,7 @@ const Dashboard = () => {
                         </div>
                         <Button size="sm" variant="outline" className="flex gap-1.5 items-center">
                           <ExternalLink className="h-3.5 w-3.5" />
-                          <span>Guide</span>
+                          <span>{t('dashboard.guide')}</span>
                         </Button>
                       </li>
                     </ul>
@@ -123,9 +124,9 @@ const Dashboard = () => {
             <TabsContent value="analytics" className="animate-fade-in">
               <GlassCard className="w-full min-h-[300px] flex flex-col items-center justify-center">
                 <Info className="h-12 w-12 text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium">Analytics Coming Soon</h3>
+                <h3 className="text-lg font-medium">{t('dashboard.analytics.soon')}</h3>
                 <p className="text-sm text-muted-foreground mt-2 max-w-md text-center">
-                  Viewer statistics, stream health metrics, and detailed analytics will be available in an upcoming update.
+                  {t('dashboard.analytics.description')}
                 </p>
               </GlassCard>
             </TabsContent>
@@ -133,9 +134,9 @@ const Dashboard = () => {
             <TabsContent value="destinations" className="animate-fade-in">
               <GlassCard className="w-full min-h-[300px] flex flex-col items-center justify-center">
                 <Info className="h-12 w-12 text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium">Stream Destinations Coming Soon</h3>
+                <h3 className="text-lg font-medium">{t('dashboard.destinations.soon')}</h3>
                 <p className="text-sm text-muted-foreground mt-2 max-w-md text-center">
-                  Connect to multiple platforms simultaneously and manage all your streaming destinations in one place.
+                  {t('dashboard.destinations.description')}
                 </p>
               </GlassCard>
             </TabsContent>

@@ -89,6 +89,15 @@
     margin: 0;
     padding: 0;
   }
+
+  /* RTL specific adjustments */
+  [dir="rtl"] .origin-left {
+    transform-origin: right;
+  }
+  
+  [dir="rtl"] .origin-right {
+    transform-origin: left;
+  }
 }
 
 @layer utilities {
@@ -136,4 +145,39 @@
   opacity: 0;
   transform: translate(0, -16px);
   transition: opacity 300ms, transform 300ms;
+}
+
+/* RTL Language Support */
+[dir="rtl"] {
+  .ml-4 {
+    @apply mr-4 ml-0;
+  }
+  
+  .mr-2 {
+    @apply ml-2 mr-0;
+  }
+  
+  .mr-4 {
+    @apply ml-4 mr-0;
+  }
+  
+  .from-accent {
+    @apply from-accent to-accent/70;
+  }
+  
+  .to-accent/70 {
+    @apply to-accent from-accent/70;
+  }
+  
+  .text-left {
+    @apply text-right;
+  }
+  
+  .text-right {
+    @apply text-left;
+  }
+  
+  .flex-col-reverse {
+    @apply flex-col;
+  }
 }

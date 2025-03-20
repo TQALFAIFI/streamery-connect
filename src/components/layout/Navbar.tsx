@@ -4,6 +4,8 @@ import { useLocation, Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Cast, Menu, X } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface NavLinkProps {
   to: string;
@@ -41,6 +43,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { t, language } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,32 +74,36 @@ const Navbar = () => {
         >
           <Cast className="w-6 h-6 text-accent" />
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent/70">
-            RTMP Stream
+            {t('app.name')}
           </span>
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-2">
-          <NavLink to="/">Home</NavLink>
-          <NavLink to="/dashboard">Dashboard</NavLink>
-          <NavLink to="/settings">Settings</NavLink>
+          <NavLink to="/">{t('nav.home')}</NavLink>
+          <NavLink to="/dashboard">{t('nav.dashboard')}</NavLink>
+          <NavLink to="/settings">{t('nav.settings')}</NavLink>
+          <LanguageSwitcher />
           <Button size="sm" className="ml-4">
-            Get Started
+            {t('nav.get-started')}
           </Button>
         </nav>
 
         {/* Mobile Menu Toggle */}
-        <button
-          className="md:hidden p-2"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          {isMobileMenuOpen ? (
-            <X className="w-6 h-6" />
-          ) : (
-            <Menu className="w-6 h-6" />
-          )}
-        </button>
+        <div className="md:hidden flex items-center gap-2">
+          <LanguageSwitcher />
+          <button
+            className="p-2"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Navigation */}
@@ -107,21 +114,23 @@ const Navbar = () => {
               to="/" 
               className="w-full flex justify-center"
             >
-              Home
+              {t('nav.home')}
             </NavLink>
             <NavLink 
               to="/dashboard" 
               className="w-full flex justify-center"
             >
-              Dashboard
+              {t('nav.dashboard')}
             </NavLink>
             <NavLink 
               to="/settings" 
               className="w-full flex justify-center"
             >
-              Settings
+              {t('nav.settings')}
             </NavLink>
-            <Button className="mt-2">Get Started</Button>
+            <Button className="mt-2">
+              {t('nav.get-started')}
+            </Button>
           </div>
         </div>
       )}
