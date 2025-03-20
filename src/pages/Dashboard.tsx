@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
@@ -8,28 +7,30 @@ import StreamStatus from '@/components/streaming/StreamStatus';
 import StreamTest from '@/components/streaming/StreamTest';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Link2, Settings, Info, ExternalLink, Plus, Trash2, Globe, Video } from 'lucide-react';
+import { Link2, Settings, Info, ExternalLink, Plus, Trash2, Globe, Video, Copy } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
+import { Textarea } from '@/components/ui/textarea';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('stream');
   const { t } = useLanguage();
-  const [destinations, setDestinations] = useState<Array<{id: string, name: string, url: string, platform: string}>>([
-    { id: '1', name: 'YouTube', url: 'rtmp://a.rtmp.youtube.com/live2', platform: 'youtube' },
-    { id: '2', name: 'Twitch', url: 'rtmp://live.twitch.tv/app', platform: 'twitch' }
+  const [destinations, setDestinations] = useState<Array<{id: string, name: string, url: string, platform: string, streamKey?: string}>>([
+    { id: '1', name: 'YouTube', url: 'rtmp://a.rtmp.youtube.com/live2', platform: 'youtube', streamKey: 'xxxx-xxxx-xxxx-xxxx' },
+    { id: '2', name: 'Twitch', url: 'rtmp://live.twitch.tv/app', platform: 'twitch', streamKey: 'live_123456789_abcdefghijklmnopqrstuvwxyz' }
   ]);
 
   const form = useForm({
     defaultValues: {
       name: '',
       url: '',
-      platform: 'custom'
+      platform: 'custom',
+      streamKey: ''
     }
   });
 
@@ -43,7 +44,8 @@ const Dashboard = () => {
       id: Date.now().toString(),
       name: data.name,
       url: data.url,
-      platform: data.platform
+      platform: data.platform,
+      streamKey: data.streamKey
     };
     
     setDestinations([...destinations, newDestination]);
@@ -54,6 +56,11 @@ const Dashboard = () => {
   const handleRemoveDestination = (id: string) => {
     setDestinations(destinations.filter(dest => dest.id !== id));
     toast.success(t('dashboard.destinations.removed'));
+  };
+
+  const copyToClipboard = (text: string, message: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success(message);
   };
 
   return (
@@ -178,7 +185,7 @@ const Dashboard = () => {
                   
                   <Form {...form}>
                     <form onSubmit={form.handleSubmit(handleAddDestination)} className="space-y-4 mb-6">
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                           control={form.control}
                           name="name"
@@ -187,19 +194,6 @@ const Dashboard = () => {
                               <FormLabel>{t('dashboard.destinations.name') || 'Destination Name'}</FormLabel>
                               <FormControl>
                                 <Input placeholder="My YouTube Channel" {...field} required />
-                              </FormControl>
-                            </FormItem>
-                          )}
-                        />
-                        
-                        <FormField
-                          control={form.control}
-                          name="url"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>{t('dashboard.destinations.url') || 'RTMP URL'}</FormLabel>
-                              <FormControl>
-                                <Input placeholder="rtmp://live.example.com/app" {...field} required />
                               </FormControl>
                             </FormItem>
                           )}
@@ -227,6 +221,39 @@ const Dashboard = () => {
                         />
                       </div>
                       
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="url"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>{t('dashboard.destinations.url') || 'RTMP URL'}</FormLabel>
+                              <FormControl>
+                                <Input placeholder="rtmp://live.example.com/app" {...field} required />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={form.control}
+                          name="streamKey"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>{t('dashboard.destinations.streamKey') || 'Stream Key'}</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="password"
+                                  placeholder="xxxx-xxxx-xxxx-xxxx" 
+                                  {...field} 
+                                  required 
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      
                       <Button type="submit" className="ml-auto">
                         <Plus className="mr-2 h-4 w-4" />
                         {t('dashboard.destinations.add') || 'Add Destination'}
@@ -238,43 +265,72 @@ const Dashboard = () => {
                 <div className="grid grid-cols-1 gap-4">
                   {destinations.map((destination) => (
                     <Card key={destination.id} className="backdrop-blur-sm bg-card/80 border-white/5">
-                      <CardContent className="p-4 flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded bg-background/50 flex items-center justify-center">
-                            {destination.platform === 'youtube' ? (
-                              <Video className="h-5 w-5 text-red-500" />
-                            ) : destination.platform === 'twitch' ? (
-                              <Video className="h-5 w-5 text-purple-500" />
-                            ) : destination.platform === 'facebook' ? (
-                              <Globe className="h-5 w-5 text-blue-500" />
-                            ) : (
-                              <Globe className="h-5 w-5" />
-                            )}
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded bg-background/50 flex items-center justify-center">
+                              {destination.platform === 'youtube' ? (
+                                <Video className="h-5 w-5 text-red-500" />
+                              ) : destination.platform === 'twitch' ? (
+                                <Video className="h-5 w-5 text-purple-500" />
+                              ) : destination.platform === 'facebook' ? (
+                                <Globe className="h-5 w-5 text-blue-500" />
+                              ) : (
+                                <Globe className="h-5 w-5" />
+                              )}
+                            </div>
+                            <div>
+                              <p className="font-medium">{destination.name}</p>
+                              <p className="text-xs text-muted-foreground capitalize">{destination.platform}</p>
+                            </div>
                           </div>
-                          <div>
-                            <p className="font-medium">{destination.name}</p>
-                            <p className="text-xs text-muted-foreground font-mono">{destination.url}</p>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              onClick={() => handleRemoveDestination(destination.id)}
+                              className="text-destructive hover:bg-destructive/10"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={() => {
-                              navigator.clipboard.writeText(destination.url);
-                              toast.success(t('dashboard.destinations.copied') || 'URL copied to clipboard');
-                            }}
-                          >
-                            <Link2 className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={() => handleRemoveDestination(destination.id)}
-                            className="text-destructive hover:bg-destructive/10"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <p className="text-xs font-medium text-muted-foreground">{t('dashboard.destinations.url') || 'RTMP URL'}</p>
+                            <div className="flex items-center gap-2">
+                              <div className="bg-background/50 text-sm font-mono p-2 rounded-md flex-1 break-all">
+                                {destination.url}
+                              </div>
+                              <Button 
+                                variant="outline" 
+                                size="icon" 
+                                onClick={() => copyToClipboard(destination.url, t('dashboard.destinations.copied') || 'URL copied to clipboard')}
+                                className="flex-shrink-0"
+                              >
+                                <Copy className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <p className="text-xs font-medium text-muted-foreground">{t('dashboard.destinations.streamKey') || 'Stream Key'}</p>
+                            <div className="flex items-center gap-2">
+                              <div className="bg-background/50 text-sm font-mono p-2 rounded-md flex-1 break-all">
+                                {destination.streamKey ? '••••••••••••••••' : ''}
+                              </div>
+                              <Button 
+                                variant="outline" 
+                                size="icon" 
+                                onClick={() => copyToClipboard(destination.streamKey || '', t('dashboard.destinations.keyCopied') || 'Stream key copied to clipboard')}
+                                className="flex-shrink-0"
+                                disabled={!destination.streamKey}
+                              >
+                                <Copy className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
@@ -347,3 +403,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
