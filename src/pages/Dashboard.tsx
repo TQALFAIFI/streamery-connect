@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import GlassCard from '@/components/ui/GlassCard';
 import StreamKey from '@/components/streaming/StreamKey';
 import StreamStatus from '@/components/streaming/StreamStatus';
+import StreamTest from '@/components/streaming/StreamTest';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Link2, Settings, Info, ExternalLink } from 'lucide-react';
@@ -47,6 +47,8 @@ const Dashboard = () => {
             <TabsContent value="stream" className="animate-fade-in">
               <div className="grid grid-cols-1 gap-6">
                 <StreamStatus />
+                
+                <StreamTest />
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <GlassCard className="flex flex-col h-full">
