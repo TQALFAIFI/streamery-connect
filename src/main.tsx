@@ -4,8 +4,8 @@ import { ClerkProvider } from '@clerk/clerk-react'
 import App from './App.tsx'
 import './index.css'
 
-// Replace with your actual Clerk publishable key
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || '';
+// Use the provided Clerk publishable key
+const PUBLISHABLE_KEY = "pk_test_cG93ZXJmdWwtc2VydmFsLTQ3LmNsZXJrLmFjY291bnRzLmRldiQ" || import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || '';
 
 // Create a root element
 const rootElement = document.getElementById("root")!;
