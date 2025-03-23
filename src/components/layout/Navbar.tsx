@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Cast, Menu, X } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
+import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 
 interface NavLinkProps {
   to: string;
@@ -43,6 +44,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { t, language } = useLanguage();
 
   useEffect(() => {
@@ -81,17 +83,53 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-2">
           <NavLink to="/">{t('nav.home')}</NavLink>
-          <NavLink to="/dashboard">{t('nav.dashboard')}</NavLink>
-          <NavLink to="/settings">{t('nav.settings')}</NavLink>
+          
+          <SignedIn>
+            <NavLink to="/dashboard">{t('nav.dashboard')}</NavLink>
+            <NavLink to="/settings">{t('nav.settings')}</NavLink>
+          </SignedIn>
+          
           <LanguageSwitcher />
-          <Button size="sm" className="ml-4">
-            {t('nav.get-started')}
-          </Button>
+          
+          <SignedIn>
+            <div className="ml-4">
+              <UserButton 
+                afterSignOutUrl="/" 
+                appearance={{
+                  elements: {
+                    userButtonAvatarBox: "w-10 h-10",
+                  }
+                }}
+              />
+            </div>
+          </SignedIn>
+          
+          <SignedOut>
+            <Button 
+              size="sm" 
+              className="ml-4"
+              onClick={() => navigate('/sign-in')}
+            >
+              {t('nav.get-started')}
+            </Button>
+          </SignedOut>
         </nav>
 
         {/* Mobile Menu Toggle */}
         <div className="md:hidden flex items-center gap-2">
           <LanguageSwitcher />
+          
+          <SignedIn>
+            <UserButton 
+              afterSignOutUrl="/" 
+              appearance={{
+                elements: {
+                  userButtonAvatarBox: "w-8 h-8",
+                }
+              }}
+            />
+          </SignedIn>
+          
           <button
             className="p-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -116,21 +154,30 @@ const Navbar = () => {
             >
               {t('nav.home')}
             </NavLink>
-            <NavLink 
-              to="/dashboard" 
-              className="w-full flex justify-center"
-            >
-              {t('nav.dashboard')}
-            </NavLink>
-            <NavLink 
-              to="/settings" 
-              className="w-full flex justify-center"
-            >
-              {t('nav.settings')}
-            </NavLink>
-            <Button className="mt-2">
-              {t('nav.get-started')}
-            </Button>
+            
+            <SignedIn>
+              <NavLink 
+                to="/dashboard" 
+                className="w-full flex justify-center"
+              >
+                {t('nav.dashboard')}
+              </NavLink>
+              <NavLink 
+                to="/settings" 
+                className="w-full flex justify-center"
+              >
+                {t('nav.settings')}
+              </NavLink>
+            </SignedIn>
+            
+            <SignedOut>
+              <Button 
+                className="mt-2"
+                onClick={() => navigate('/sign-in')}
+              >
+                {t('nav.get-started')}
+              </Button>
+            </SignedOut>
           </div>
         </div>
       )}

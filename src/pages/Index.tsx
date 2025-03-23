@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import Navbar from '@/components/layout/Navbar';
 import { Monitor, Zap, Link2, Shield } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { SignedIn, SignedOut } from '@clerk/clerk-react';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -35,9 +36,16 @@ const Index = () => {
               </p>
               
               <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-up" style={{animationDelay: '300ms'}}>
-                <Button size="lg" onClick={() => navigate('/dashboard')}>
-                  {t('nav.get-started')}
-                </Button>
+                <SignedIn>
+                  <Button size="lg" onClick={() => navigate('/dashboard')}>
+                    {t('nav.dashboard')}
+                  </Button>
+                </SignedIn>
+                <SignedOut>
+                  <Button size="lg" onClick={() => navigate('/sign-in')}>
+                    {t('nav.get-started')}
+                  </Button>
+                </SignedOut>
                 <Button size="lg" variant="outline">
                   {t('nav.learn-more')}
                 </Button>
@@ -118,14 +126,26 @@ const Index = () => {
                   </p>
                 </div>
                 
-                <Button 
-                  size="lg" 
-                  variant="secondary"
-                  className="whitespace-nowrap"
-                  onClick={() => navigate('/dashboard')}
-                >
-                  {t('home.cta.button')}
-                </Button>
+                <SignedIn>
+                  <Button 
+                    size="lg" 
+                    variant="secondary"
+                    className="whitespace-nowrap"
+                    onClick={() => navigate('/dashboard')}
+                  >
+                    {t('home.cta.button')}
+                  </Button>
+                </SignedIn>
+                <SignedOut>
+                  <Button 
+                    size="lg" 
+                    variant="secondary"
+                    className="whitespace-nowrap"
+                    onClick={() => navigate('/sign-in')}
+                  >
+                    {t('home.cta.button')}
+                  </Button>
+                </SignedOut>
               </div>
             </div>
           </div>
