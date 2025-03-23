@@ -5,7 +5,7 @@ import App from './App.tsx'
 import './index.css'
 
 // Use the provided Clerk publishable key
-const PUBLISHABLE_KEY = "pk_test_cG93ZXJmdWwtc2VydmFsLTQ3LmNsZXJrLmFjY291bnRzLmRldiQ" || import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || '';
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || "pk_test_cG93ZXJmdWwtc2VydmFsLTQ3LmNsZXJrLmFjY291bnRzLmRldiQ";
 
 // Create a root element
 const rootElement = document.getElementById("root")!;
