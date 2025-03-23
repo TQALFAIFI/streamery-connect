@@ -5,9 +5,10 @@ import StreamStatus from '@/components/streaming/StreamStatus';
 import StreamTest from '@/components/streaming/StreamTest';
 import StreamKey from '@/components/streaming/StreamKey';
 import { Button } from '@/components/ui/button';
-import { Link2, ExternalLink } from 'lucide-react';
+import { Link2, ExternalLink, Info } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
+import OBSGuide from '@/components/streaming/OBSGuide';
 
 const StreamTab = () => {
   const { t } = useLanguage();
@@ -55,9 +56,14 @@ const StreamTab = () => {
                 <p className="text-sm font-medium">OBS Studio</p>
                 <p className="text-xs text-muted-foreground">Open Broadcaster Software</p>
               </div>
-              <Button size="sm" variant="outline" className="flex gap-1.5 items-center">
-                <ExternalLink className="h-3.5 w-3.5" />
-                <span>{t('dashboard.guide')}</span>
+              <Button 
+                size="sm" 
+                variant="outline" 
+                className="flex gap-1.5 items-center"
+                onClick={() => document.getElementById('obs-guide')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                <Info className="h-3.5 w-3.5" />
+                <span>{t('dashboard.howto') || 'How to use'}</span>
               </Button>
             </li>
             
@@ -93,6 +99,9 @@ const StreamTab = () => {
       </div>
       
       <StreamKey />
+      
+      {/* OBS Guide component */}
+      <OBSGuide />
     </div>
   );
 };

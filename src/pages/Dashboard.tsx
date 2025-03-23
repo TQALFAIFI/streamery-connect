@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -12,8 +12,27 @@ import DestinationsTab from '@/components/dashboard/destinations/DestinationsTab
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('stream');
+  const [searchParams] = useSearchParams();
+  const initialTab = searchParams.get('tab') || 'stream';
+  const [activeTab, setActiveTab] = useState(initialTab);
   const { t } = useLanguage();
+  
+  // Effect to handle deep linking to OBS guide
+  useEffect(() => {
+    if (searchParams.get('section') === 'obs-guide') {
+      setActiveTab('stream');
+      // Use a small timeout to wait for the component to render
+      setTimeout(() => {
+        document.getElementById('obs-guide')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }, [searchParams]);
+
+  // Update URL when tab changes
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    navigate(`/dashboard?tab=${value}`, { replace: true });
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-background via-accent/5">
@@ -31,7 +50,7 @@ const Dashboard = () => {
             </Button>
           </div>
           
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
             <TabsList className="mb-6">
               <TabsTrigger value="stream">{t('dashboard.tabs.stream')}</TabsTrigger>
               <TabsTrigger value="analytics">{t('dashboard.tabs.analytics')}</TabsTrigger>
