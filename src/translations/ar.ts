@@ -1,4 +1,3 @@
-
 const translations = {
   // Common
   "app.name": "بث RTMP",
@@ -116,7 +115,11 @@ const translations = {
   
   // Not Found
   "notfound.message": "عفواً! الصفحة غير موجودة",
-  "notfound.return": "العودة إلى الصفحة الرئيسية"
+  "notfound.return": "العودة إلى الصفحة الرئيسية",
+  
+  // Authentication
+  "auth.signIn": "تسجيل الدخول",
+  "auth.welcomeBack": "تسجيل الدخول أو التسجيل في الموقع"
 };
 
 export default translations;

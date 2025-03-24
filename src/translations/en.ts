@@ -1,4 +1,3 @@
-
 const translations = {
   // Common
   "app.name": "RTMP Stream",
@@ -50,7 +49,11 @@ const translations = {
   
   // Not Found
   "notfound.message": "Oops! Page not found",
-  "notfound.return": "Return to Home"
+  "notfound.return": "Return to Home",
+  
+  // Authentication
+  "auth.signIn": "Sign In",
+  "auth.welcomeBack": "Sign in or register on the website"
 };
 
 export default translations;
