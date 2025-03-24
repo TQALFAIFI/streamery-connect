@@ -4,8 +4,15 @@ import { SignIn as ClerkSignIn } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { CardDescription } from '@/components/ui/card';
 import { Monitor } from 'lucide-react';
+
+// CSS لإخفاء شريط Clerk
+const clerkFooterStyle = `
+  .cl-footer {
+    display: none !important;
+  }
+`;
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -14,6 +21,9 @@ const SignIn = () => {
   return (
     <div className="min-h-screen flex flex-col relative bg-gradient-to-b from-background to-background via-accent/5">
       <div className="absolute inset-0 bg-noise-pattern opacity-25 pointer-events-none" />
+      
+      {/* إضافة أسلوب CSS لإخفاء شريط Clerk */}
+      <style>{clerkFooterStyle}</style>
       
       <div className="container max-w-md mx-auto flex-1 flex flex-col justify-center items-center py-12 px-4">
         <div className="w-full bg-background/50 backdrop-blur-md rounded-xl p-8 shadow-lg border border-border/40 animate-fade-in">
@@ -44,6 +54,7 @@ const SignIn = () => {
                 footerActionText: "text-muted-foreground",
                 identityPreviewText: "text-foreground",
                 identityPreviewEditButton: "text-accent hover:text-accent/90",
+                footer: "hidden", // إخفاء الشريط السفلي
               }
             }}
           />
