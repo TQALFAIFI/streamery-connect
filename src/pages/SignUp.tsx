@@ -7,10 +7,16 @@ import { Button } from '@/components/ui/button';
 import { CardDescription } from '@/components/ui/card';
 import { Monitor } from 'lucide-react';
 
-// CSS لإخفاء شريط Clerk
+// CSS لإخفاء شريط Clerk وتوسيط النص
 const clerkFooterStyle = `
   .cl-footer {
     display: none !important;
+  }
+  
+  .cl-cardBox {
+    display: flex !important;
+    justify-content: center !important;
+    text-align: center !important;
   }
 `;
 
@@ -22,7 +28,7 @@ const SignUp = () => {
     <div className="min-h-screen flex flex-col relative bg-gradient-to-b from-background to-background via-accent/5">
       <div className="absolute inset-0 bg-noise-pattern opacity-25 pointer-events-none" />
       
-      {/* إضافة أسلوب CSS لإخفاء شريط Clerk */}
+      {/* إضافة أسلوب CSS لإخفاء شريط Clerk وتوسيط النص */}
       <style>{clerkFooterStyle}</style>
       
       <div className="container max-w-md mx-auto flex-1 flex flex-col justify-center items-center py-12 px-4">
