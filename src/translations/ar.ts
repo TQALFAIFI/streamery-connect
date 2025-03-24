@@ -122,7 +122,8 @@ const translations = {
   "auth.signIn": "تسجيل الدخول",
   "auth.welcomeBack": "تسجيل الدخول أو التسجيل في الموقع",
   "auth.noAccount": "تسجيل في الموقع",
-  "auth.backToHome": "العودة إلى الرئيسية"
+  "auth.backToHome": "العودة إلى الرئيسية",
+  "auth.haveAccount": "تسجيل الدخول"
 };
 
 export default translations;

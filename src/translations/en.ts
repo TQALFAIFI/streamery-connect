@@ -56,7 +56,8 @@ const translations = {
   "auth.signIn": "Sign In",
   "auth.welcomeBack": "Sign in or register on the website",
   "auth.noAccount": "Register on the website",
-  "auth.backToHome": "Back to Home"
+  "auth.backToHome": "Back to Home",
+  "auth.haveAccount": "Sign In"
 };
 
 export default translations;
