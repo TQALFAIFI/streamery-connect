@@ -1,3 +1,4 @@
+
 const translations = {
   // Common
   "app.name": "RTMP Stream",
@@ -53,7 +54,9 @@ const translations = {
   
   // Authentication
   "auth.signIn": "Sign In",
-  "auth.welcomeBack": "Sign in or register on the website"
+  "auth.welcomeBack": "Sign in or register on the website",
+  "auth.noAccount": "Register on the website",
+  "auth.backToHome": "Back to Home"
 };
 
 export default translations;
