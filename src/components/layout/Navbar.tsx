@@ -158,7 +158,7 @@ const Navbar = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem onClick={() => navigate('/settings')}>
+                  <DropdownMenuItem onClick={() => navigate('/profile')}>
                     {language === 'ar' ? 'إعدادات الحساب' : 'Account Settings'}
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={handleSignOut}>
@@ -197,7 +197,7 @@ const Navbar = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem onClick={() => navigate('/settings')}>
+                <DropdownMenuItem onClick={() => navigate('/profile')}>
                   {language === 'ar' ? 'إعدادات الحساب' : 'Account Settings'}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleSignOut}>
