@@ -18,6 +18,10 @@ const clerkFooterStyle = `
     justify-content: center !important;
     text-align: center !important;
   }
+  
+  .cl-internal-b3fm6y {
+    display: none !important;
+  }
 `;
 
 const SignUp = () => {
