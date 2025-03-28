@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import SignIn from "./pages/SignIn";
@@ -14,16 +13,21 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+// For demo purposes, we'll use a simple approach
+// In a real app, you would check if the user is logged in via context or state management
+const isAuthenticated = () => {
+  // This would be replaced with actual authentication logic
+  // For now, we'll return false (user is not logged in)
+  return false;
+};
+
 // Protected route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <>
-      <SignedIn>{children}</SignedIn>
-      <SignedOut>
-        <Navigate to="/sign-in" replace />
-      </SignedOut>
-    </>
-  );
+  if (!isAuthenticated()) {
+    return <Navigate to="/sign-in" replace />;
+  }
+  
+  return <>{children}</>;
 };
 
 const App = () => (

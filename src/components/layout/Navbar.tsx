@@ -3,10 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Cast, Menu, X } from 'lucide-react';
+import { Cast, Menu, User, X } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
-import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 
 interface NavLinkProps {
   to: string;
@@ -40,12 +39,19 @@ const NavLink = ({ to, children, className }: NavLinkProps) => {
   );
 };
 
+// For demo purposes, we'll assume a user is logged in if they're on dashboard or settings pages
+const useIsLoggedIn = () => {
+  const location = useLocation();
+  return location.pathname === '/dashboard' || location.pathname === '/settings';
+};
+
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { t, language } = useLanguage();
+  const isLoggedIn = useIsLoggedIn();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,6 +65,11 @@ const Navbar = () => {
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location]);
+
+  const handleSignOut = () => {
+    // Add any sign out logic here
+    navigate('/');
+  };
 
   return (
     <header
@@ -84,27 +95,34 @@ const Navbar = () => {
         <nav className="hidden md:flex items-center gap-2">
           <NavLink to="/">{t('nav.home')}</NavLink>
           
-          <SignedIn>
-            <NavLink to="/dashboard">{t('nav.dashboard')}</NavLink>
-            <NavLink to="/settings">{t('nav.settings')}</NavLink>
-          </SignedIn>
+          {isLoggedIn && (
+            <>
+              <NavLink to="/dashboard">{t('nav.dashboard')}</NavLink>
+              <NavLink to="/settings">{t('nav.settings')}</NavLink>
+            </>
+          )}
           
           <LanguageSwitcher />
           
-          <SignedIn>
-            <div className="ml-4">
-              <UserButton 
-                afterSignOutUrl="/" 
-                appearance={{
-                  elements: {
-                    userButtonAvatarBox: "w-10 h-10",
-                  }
-                }}
-              />
+          {isLoggedIn ? (
+            <div className="ml-4 flex items-center">
+              <Button 
+                variant="outline"
+                size="icon"
+                className="rounded-full"
+                onClick={() => navigate('/settings')}
+              >
+                <User className="h-4 w-4" />
+              </Button>
+              <Button 
+                variant="ghost"
+                className="ml-2"
+                onClick={handleSignOut}
+              >
+                Sign Out
+              </Button>
             </div>
-          </SignedIn>
-          
-          <SignedOut>
+          ) : (
             <Button 
               size="sm" 
               className="ml-4"
@@ -112,23 +130,23 @@ const Navbar = () => {
             >
               {t('nav.get-started')}
             </Button>
-          </SignedOut>
+          )}
         </nav>
 
         {/* Mobile Menu Toggle */}
         <div className="md:hidden flex items-center gap-2">
           <LanguageSwitcher />
           
-          <SignedIn>
-            <UserButton 
-              afterSignOutUrl="/" 
-              appearance={{
-                elements: {
-                  userButtonAvatarBox: "w-8 h-8",
-                }
-              }}
-            />
-          </SignedIn>
+          {isLoggedIn && (
+            <Button 
+              variant="outline"
+              size="icon"
+              className="rounded-full w-8 h-8"
+              onClick={() => navigate('/settings')}
+            >
+              <User className="h-4 w-4" />
+            </Button>
+          )}
           
           <button
             className="p-2"
@@ -155,29 +173,37 @@ const Navbar = () => {
               {t('nav.home')}
             </NavLink>
             
-            <SignedIn>
-              <NavLink 
-                to="/dashboard" 
-                className="w-full flex justify-center"
-              >
-                {t('nav.dashboard')}
-              </NavLink>
-              <NavLink 
-                to="/settings" 
-                className="w-full flex justify-center"
-              >
-                {t('nav.settings')}
-              </NavLink>
-            </SignedIn>
+            {isLoggedIn && (
+              <>
+                <NavLink 
+                  to="/dashboard" 
+                  className="w-full flex justify-center"
+                >
+                  {t('nav.dashboard')}
+                </NavLink>
+                <NavLink 
+                  to="/settings" 
+                  className="w-full flex justify-center"
+                >
+                  {t('nav.settings')}
+                </NavLink>
+                <Button 
+                  className="mt-2"
+                  onClick={handleSignOut}
+                >
+                  Sign Out
+                </Button>
+              </>
+            )}
             
-            <SignedOut>
+            {!isLoggedIn && (
               <Button 
                 className="mt-2"
                 onClick={() => navigate('/sign-in')}
               >
                 {t('nav.get-started')}
               </Button>
-            </SignedOut>
+            )}
           </div>
         </div>
       )}
