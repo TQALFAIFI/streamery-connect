@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -135,7 +134,6 @@ const Navbar = () => {
           {isLoggedIn && (
             <>
               <NavLink to="/dashboard">{t('nav.dashboard')}</NavLink>
-              <NavLink to="/settings">{t('nav.settings')}</NavLink>
             </>
           )}
           
@@ -238,12 +236,6 @@ const Navbar = () => {
                   className="w-full flex justify-center"
                 >
                   {t('nav.dashboard')}
-                </NavLink>
-                <NavLink 
-                  to="/settings" 
-                  className="w-full flex justify-center"
-                >
-                  {t('nav.settings')}
                 </NavLink>
                 <NavLink 
                   to="/profile" 
