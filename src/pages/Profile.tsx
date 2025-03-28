@@ -264,21 +264,6 @@ const Profile = () => {
               </div>
             </div>
           </div>
-          
-          <div className="space-y-2">
-            <h3 className="text-lg font-medium">{t('profile.streaming')}</h3>
-            <p className="text-sm text-muted-foreground">
-              {t('profile.streaming.desc')}
-            </p>
-            <Button 
-              variant="outline" 
-              className="mt-2"
-              onClick={() => navigate('/dashboard')}
-            >
-              <Settings className="mr-2 h-4 w-4" />
-              {t('profile.goto.dashboard')}
-            </Button>
-          </div>
         </CardContent>
         <CardFooter className="flex flex-col sm:flex-row gap-3 justify-between">
           <Button 
