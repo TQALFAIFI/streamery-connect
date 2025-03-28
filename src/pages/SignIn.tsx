@@ -12,7 +12,7 @@ import Navbar from '@/components/layout/Navbar';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 
 // Form validation schema
 const formSchema = z.object({
