@@ -42,6 +42,17 @@ const translations = {
   "profile.streaming.desc": "Manage your streaming settings and preferences from your dashboard.",
   "profile.goto.dashboard": "Go to Dashboard",
   "profile.goto.settings": "Account Settings",
+  "profile.save": "Save Changes",
+  "profile.picture.updated": "Profile Picture Updated",
+  "profile.picture.success": "Your profile picture has been successfully updated.",
+  "profile.username.updated": "Username Updated",
+  "profile.username.success": "Your username has been successfully updated.",
+  "profile.email.updated": "Email Updated",
+  "profile.email.success": "Your email has been successfully updated.",
+  "profile.edit.username": "Edit Username",
+  "profile.edit.username.desc": "Update your username. This will be visible to other users.",
+  "profile.edit.email": "Edit Email",
+  "profile.edit.email.desc": "Update your email address. This will be used for notifications and account recovery.",
   
   // Dashboard
   "dashboard.title": "Streaming Dashboard",
