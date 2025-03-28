@@ -34,7 +34,6 @@ const Profile = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [userName, setUserName] = useState<string | null>(null);
   const [userUsername, setUserUsername] = useState<string | null>(null);
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [editUsernameOpen, setEditUsernameOpen] = useState(false);
@@ -50,12 +49,10 @@ const Profile = () => {
     
     // Get user info from localStorage
     const email = localStorage.getItem('userEmail');
-    const name = localStorage.getItem('userName');
     const username = localStorage.getItem('userUsername');
     const profilePic = localStorage.getItem('profilePicture');
     
     setUserEmail(email);
-    setUserName(name);
     setUserUsername(username);
     setProfilePicture(profilePic);
   }, [navigate]);
@@ -64,7 +61,6 @@ const Profile = () => {
     // Clear authentication state
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userEmail');
-    localStorage.removeItem('userName');
     localStorage.removeItem('userUsername');
     localStorage.removeItem('profilePicture');
     
@@ -102,7 +98,6 @@ const Profile = () => {
   // Function to get initials from username or email
   const getInitials = () => {
     if (userUsername) return userUsername.charAt(0).toUpperCase();
-    if (userName) return userName.charAt(0).toUpperCase();
     if (userEmail) {
       const parts = userEmail.split('@');
       return parts[0].charAt(0).toUpperCase();
@@ -174,7 +169,7 @@ const Profile = () => {
               </label>
             </div>
           </div>
-          <CardTitle className="text-2xl">{userName || userUsername || userEmail || 'User'}</CardTitle>
+          <CardTitle className="text-2xl">{userUsername || userEmail || 'User'}</CardTitle>
           <CardDescription>
             {userUsername ? `@${userUsername}` : 'Account Settings'}
           </CardDescription>
@@ -183,12 +178,6 @@ const Profile = () => {
           <div className="space-y-2">
             <h3 className="text-lg font-medium">{t('profile.info')}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {userName && (
-                <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Name</p>
-                  <p className="font-medium">{userName}</p>
-                </div>
-              )}
               {userUsername && (
                 <div className="space-y-1 flex justify-between items-center">
                   <div>
@@ -272,10 +261,6 @@ const Profile = () => {
                     </Form>
                   </DialogContent>
                 </Dialog>
-              </div>
-              <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">{t('profile.type')}</p>
-                <p className="font-medium">Streamer</p>
               </div>
             </div>
           </div>

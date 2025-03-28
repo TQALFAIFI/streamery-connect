@@ -37,7 +37,6 @@ const translations = {
   "profile.info": "Profile Information",
   "profile.email": "Email",
   "profile.username": "Username",
-  "profile.type": "Account Type",
   "profile.streaming": "Streaming Information",
   "profile.streaming.desc": "Manage your streaming settings and preferences from your dashboard.",
   "profile.goto.dashboard": "Go to Dashboard",
