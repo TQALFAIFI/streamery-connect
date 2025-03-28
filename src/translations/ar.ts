@@ -1,4 +1,3 @@
-
 const translations = {
   // Common
   "app.name": "بث RTMP",
@@ -49,6 +48,22 @@ const translations = {
   "profile.edit.username.desc": "تحديث اسم المستخدم الخاص بك. سيكون هذا مرئيًا للمستخدمين الآخرين.",
   "profile.edit.email": "تعديل البريد الإلكتروني",
   "profile.edit.email.desc": "تحديث عنوان بريدك الإلكتروني. سيتم استخدام هذا للإشعارات واسترداد الحساب.",
+  
+  // Subscription and Plans
+  "profile.subscription": "خطة الاشتراك",
+  "profile.subscription.desc": "خطة الاشتراك الحالية والحالة.",
+  "profile.plan.free": "خطة الملف الشخصي مجانية",
+  "profile.plan.pro": "الخطة الاحترافية",
+  "profile.plan.premium": "الخطة المميزة",
+  "profile.plan.free.desc": "ميزات البث الأساسية بجودة قياسية.",
+  "profile.plan.pro.desc": "ميزات متقدمة مع جودة بث عالية الدقة.",
+  "profile.plan.premium.desc": "جميع الميزات مفتوحة مع دعم البث بدقة 4K.",
+  "profile.plan.upgrade": "ترقية الخطة",
+  "profile.plan.manage": "إدارة الاشتراك",
+  "profile.plan.status": "حالة الخطة",
+  "profile.plan.active": "نشطة",
+  "profile.plan.expired": "منتهية",
+  "profile.plan.trial": "تجريبية",
   
   // Dashboard
   "dashboard.title": "لوحة تحكم البث",
