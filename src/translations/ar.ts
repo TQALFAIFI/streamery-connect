@@ -12,6 +12,7 @@ const translations = {
   "nav.settings": "الإعدادات",
   "nav.get-started": "ابدأ الآن",
   "nav.learn-more": "تعرف على المزيد",
+  "nav.sign-out": "تسجيل الخروج",
   
   // Home Page
   "home.features.title": "ميزات قوية",
