@@ -12,6 +12,7 @@ const translations = {
   "nav.settings": "Settings",
   "nav.get-started": "Get Started",
   "nav.learn-more": "Learn More",
+  "nav.sign-out": "Sign Out",
   
   // Home Page
   "home.features.title": "Powerful Features",
