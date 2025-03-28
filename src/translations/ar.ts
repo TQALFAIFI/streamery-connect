@@ -13,6 +13,7 @@ const translations = {
   "nav.get-started": "ابدأ الآن",
   "nav.learn-more": "تعرف على المزيد",
   "nav.sign-out": "تسجيل الخروج",
+  "nav.profile": "الملف الشخصي",
   
   // Home Page
   "home.features.title": "ميزات قوية",
@@ -29,6 +30,17 @@ const translations = {
   "home.cta.description": "انضم إلى آلاف من صانعي المحتوى الذين يثقون في منصتنا للبث الموثوق عالي الجودة.",
   "home.cta.button": "ابدأ الآن",
   "home.footer.rights": "جميع الحقوق محفوظة.",
+  
+  // Profile
+  "profile.title": "الملف الشخصي",
+  "profile.account": "إعدادات الحساب",
+  "profile.info": "معلومات الملف الشخصي",
+  "profile.email": "البريد الإلكتروني",
+  "profile.type": "نوع الحساب",
+  "profile.streaming": "معلومات البث",
+  "profile.streaming.desc": "إدارة إعدادات وتفضيلات البث من لوحة التحكم الخاصة بك.",
+  "profile.goto.dashboard": "الذهاب إلى لوحة التحكم",
+  "profile.goto.settings": "إعدادات الحساب",
   
   // Dashboard
   "dashboard.title": "لوحة تحكم البث",

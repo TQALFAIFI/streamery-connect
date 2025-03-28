@@ -13,6 +13,7 @@ const translations = {
   "nav.get-started": "Get Started",
   "nav.learn-more": "Learn More",
   "nav.sign-out": "Sign Out",
+  "nav.profile": "Profile",
   
   // Home Page
   "home.features.title": "Powerful Features",
@@ -29,6 +30,17 @@ const translations = {
   "home.cta.description": "Join thousands of content creators who trust our platform for reliable, high-quality streaming.",
   "home.cta.button": "Get Started",
   "home.footer.rights": "All rights reserved.",
+  
+  // Profile
+  "profile.title": "User Profile",
+  "profile.account": "Account Settings",
+  "profile.info": "Profile Information",
+  "profile.email": "Email",
+  "profile.type": "Account Type",
+  "profile.streaming": "Streaming Information",
+  "profile.streaming.desc": "Manage your streaming settings and preferences from your dashboard.",
+  "profile.goto.dashboard": "Go to Dashboard",
+  "profile.goto.settings": "Account Settings",
   
   // Dashboard
   "dashboard.title": "Streaming Dashboard",

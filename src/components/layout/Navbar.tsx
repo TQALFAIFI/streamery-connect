@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Cast, Menu, User, X } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 interface NavLinkProps {
   to: string;
@@ -69,6 +70,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { t, language } = useLanguage();
   const isLoggedIn = useIsLoggedIn();
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -83,6 +85,15 @@ const Navbar = () => {
     setIsMobileMenuOpen(false);
   }, [location]);
 
+  useEffect(() => {
+    // Get user email from localStorage
+    if (isLoggedIn) {
+      setUserEmail(localStorage.getItem('userEmail'));
+    } else {
+      setUserEmail(null);
+    }
+  }, [isLoggedIn]);
+
   const handleSignOut = () => {
     // Clear authentication state
     localStorage.removeItem('isAuthenticated');
@@ -93,6 +104,13 @@ const Navbar = () => {
     
     // Navigate to home page
     navigate('/');
+  };
+
+  // Function to get initials from email
+  const getInitials = (email: string | null) => {
+    if (!email) return 'U';
+    const parts = email.split('@');
+    return parts[0].charAt(0).toUpperCase();
   };
 
   return (
@@ -134,16 +152,20 @@ const Navbar = () => {
                 variant="outline"
                 size="icon"
                 className="rounded-full"
-                onClick={() => navigate('/settings')}
+                onClick={() => navigate('/profile')}
               >
-                <User className="h-4 w-4" />
+                <Avatar className="h-8 w-8">
+                  <AvatarFallback className="text-xs font-medium">
+                    {getInitials(userEmail)}
+                  </AvatarFallback>
+                </Avatar>
               </Button>
               <Button 
                 variant="ghost"
                 className="ml-2"
                 onClick={handleSignOut}
               >
-                {t('nav.sign-out') || 'Sign Out'}
+                {t('nav.sign-out')}
               </Button>
             </div>
           ) : (
@@ -166,9 +188,13 @@ const Navbar = () => {
               variant="outline"
               size="icon"
               className="rounded-full w-8 h-8"
-              onClick={() => navigate('/settings')}
+              onClick={() => navigate('/profile')}
             >
-              <User className="h-4 w-4" />
+              <Avatar className="h-8 w-8">
+                <AvatarFallback className="text-xs font-medium">
+                  {getInitials(userEmail)}
+                </AvatarFallback>
+              </Avatar>
             </Button>
           )}
           
@@ -211,11 +237,17 @@ const Navbar = () => {
                 >
                   {t('nav.settings')}
                 </NavLink>
+                <NavLink 
+                  to="/profile" 
+                  className="w-full flex justify-center"
+                >
+                  Profile
+                </NavLink>
                 <Button 
                   className="mt-2"
                   onClick={handleSignOut}
                 >
-                  {t('nav.sign-out') || 'Sign Out'}
+                  {t('nav.sign-out')}
                 </Button>
               </>
             )}
