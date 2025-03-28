@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -29,6 +28,7 @@ import {
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { Badge } from '@/components/ui/badge';
+import Navbar from '@/components/layout/Navbar';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -43,14 +43,12 @@ const Profile = () => {
   const [planStatus, setPlanStatus] = useState<'active' | 'expired' | 'trial'>('active');
   
   useEffect(() => {
-    // Check if user is authenticated
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     if (!isAuthenticated) {
       navigate('/sign-in');
       return;
     }
     
-    // Get user info from localStorage
     const email = localStorage.getItem('userEmail');
     const username = localStorage.getItem('userUsername');
     const profilePic = localStorage.getItem('profilePicture');
@@ -65,7 +63,6 @@ const Profile = () => {
   }, [navigate]);
 
   const handleSignOut = () => {
-    // Clear authentication state
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userUsername');
@@ -76,14 +73,11 @@ const Profile = () => {
       description: "You have been signed out of your account",
     });
     
-    // Trigger a storage event to update UI components
     window.dispatchEvent(new Event('storage'));
     
-    // Navigate to home page
     navigate('/');
   };
 
-  // Function to handle profile picture upload
   const handleProfilePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -102,7 +96,6 @@ const Profile = () => {
     }
   };
 
-  // Function to get initials from username or email
   const getInitials = () => {
     if (userUsername) return userUsername.charAt(0).toUpperCase();
     if (userEmail) {
@@ -112,7 +105,6 @@ const Profile = () => {
     return 'U';
   };
 
-  // Form for updating username
   const updateUsername = (data: { username: string }) => {
     setUserUsername(data.username);
     localStorage.setItem('userUsername', data.username);
@@ -124,7 +116,6 @@ const Profile = () => {
     });
   };
 
-  // Form for updating email
   const updateEmail = (data: { email: string }) => {
     setUserEmail(data.email);
     localStorage.setItem('userEmail', data.email);
@@ -136,21 +127,18 @@ const Profile = () => {
     });
   };
 
-  // Username edit form
   const usernameForm = useForm({
     defaultValues: {
       username: userUsername || '',
     },
   });
 
-  // Email edit form
   const emailForm = useForm({
     defaultValues: {
       email: userEmail || '',
     },
   });
 
-  // Helper function to get plan badge color
   const getPlanBadgeColor = () => {
     switch (subscriptionPlan) {
       case 'premium':
@@ -162,7 +150,6 @@ const Profile = () => {
     }
   };
 
-  // Helper function to get status badge color
   const getStatusBadgeColor = () => {
     switch (planStatus) {
       case 'active':
@@ -175,48 +162,91 @@ const Profile = () => {
   };
 
   return (
-    <div className="container max-w-4xl mx-auto pt-28 pb-16 px-4">
-      <Card className="w-full">
-        <CardHeader className="text-center">
-          <div className="flex justify-center mb-4 relative">
-            <Avatar className="h-24 w-24">
-              <AvatarImage src={profilePicture || ""} alt="Profile" />
-              <AvatarFallback className="text-2xl font-medium bg-accent text-accent-foreground">
-                {getInitials()}
-              </AvatarFallback>
-            </Avatar>
-            <div className="absolute bottom-0 right-1/2 translate-x-12 translate-y-2">
-              <label htmlFor="profile-picture" className="cursor-pointer">
-                <div className="bg-primary text-primary-foreground rounded-full p-2 hover:bg-primary/90 transition-colors">
-                  <Upload className="h-4 w-4" />
-                </div>
-                <input
-                  id="profile-picture"
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleProfilePictureChange}
-                />
-              </label>
+    <>
+      <Navbar />
+      <div className="container max-w-4xl mx-auto pt-28 pb-16 px-4">
+        <Card className="w-full">
+          <CardHeader className="text-center">
+            <div className="flex justify-center mb-4 relative">
+              <Avatar className="h-24 w-24">
+                <AvatarImage src={profilePicture || ""} alt="Profile" />
+                <AvatarFallback className="text-2xl font-medium bg-accent text-accent-foreground">
+                  {getInitials()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="absolute bottom-0 right-1/2 translate-x-12 translate-y-2">
+                <label htmlFor="profile-picture" className="cursor-pointer">
+                  <div className="bg-primary text-primary-foreground rounded-full p-2 hover:bg-primary/90 transition-colors">
+                    <Upload className="h-4 w-4" />
+                  </div>
+                  <input
+                    id="profile-picture"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleProfilePictureChange}
+                  />
+                </label>
+              </div>
             </div>
-          </div>
-          <CardTitle className="text-2xl">{userUsername || userEmail || 'User'}</CardTitle>
-          <CardDescription>
-            {userUsername ? `@${userUsername}` : 'Account Settings'}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Profile Information Section */}
-          <div className="space-y-2">
-            <h3 className="text-lg font-medium">{t('profile.info')}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {userUsername && (
+            <CardTitle className="text-2xl">{userUsername || userEmail || 'User'}</CardTitle>
+            <CardDescription>
+              {userUsername ? `@${userUsername}` : 'Account Settings'}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-2">
+              <h3 className="text-lg font-medium">{t('profile.info')}</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {userUsername && (
+                  <div className="space-y-1 flex justify-between items-center">
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t('profile.username')}</p>
+                      <p className="font-medium">@{userUsername}</p>
+                    </div>
+                    <Dialog open={editUsernameOpen} onOpenChange={setEditUsernameOpen}>
+                      <DialogTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                          <DialogTitle>{t('profile.edit.username')}</DialogTitle>
+                          <DialogDescription>
+                            {t('profile.edit.username.desc')}
+                          </DialogDescription>
+                        </DialogHeader>
+                        <Form {...usernameForm}>
+                          <form onSubmit={usernameForm.handleSubmit(updateUsername)} className="space-y-4">
+                            <FormField
+                              control={usernameForm.control}
+                              name="username"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>{t('profile.username')}</FormLabel>
+                                  <FormControl>
+                                    <Input placeholder="username" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <DialogFooter>
+                              <Button type="submit">{t('profile.save')}</Button>
+                            </DialogFooter>
+                          </form>
+                        </Form>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+                )}
                 <div className="space-y-1 flex justify-between items-center">
                   <div>
-                    <p className="text-sm text-muted-foreground">{t('profile.username')}</p>
-                    <p className="font-medium">@{userUsername}</p>
+                    <p className="text-sm text-muted-foreground">{t('profile.email')}</p>
+                    <p className="font-medium">{userEmail || 'Not available'}</p>
                   </div>
-                  <Dialog open={editUsernameOpen} onOpenChange={setEditUsernameOpen}>
+                  <Dialog open={editEmailOpen} onOpenChange={setEditEmailOpen}>
                     <DialogTrigger asChild>
                       <Button variant="ghost" size="icon">
                         <Pencil className="h-4 w-4" />
@@ -224,21 +254,21 @@ const Profile = () => {
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
                       <DialogHeader>
-                        <DialogTitle>{t('profile.edit.username')}</DialogTitle>
+                        <DialogTitle>{t('profile.edit.email')}</DialogTitle>
                         <DialogDescription>
-                          {t('profile.edit.username.desc')}
+                          {t('profile.edit.email.desc')}
                         </DialogDescription>
                       </DialogHeader>
-                      <Form {...usernameForm}>
-                        <form onSubmit={usernameForm.handleSubmit(updateUsername)} className="space-y-4">
+                      <Form {...emailForm}>
+                        <form onSubmit={emailForm.handleSubmit(updateEmail)} className="space-y-4">
                           <FormField
-                            control={usernameForm.control}
-                            name="username"
+                            control={emailForm.control}
+                            name="email"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>{t('profile.username')}</FormLabel>
+                                <FormLabel>{t('profile.email')}</FormLabel>
                                 <FormControl>
-                                  <Input placeholder="username" {...field} />
+                                  <Input type="email" placeholder="email@example.com" {...field} />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -252,114 +282,72 @@ const Profile = () => {
                     </DialogContent>
                   </Dialog>
                 </div>
-              )}
-              <div className="space-y-1 flex justify-between items-center">
-                <div>
-                  <p className="text-sm text-muted-foreground">{t('profile.email')}</p>
-                  <p className="font-medium">{userEmail || 'Not available'}</p>
-                </div>
-                <Dialog open={editEmailOpen} onOpenChange={setEditEmailOpen}>
-                  <DialogTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                      <DialogTitle>{t('profile.edit.email')}</DialogTitle>
-                      <DialogDescription>
-                        {t('profile.edit.email.desc')}
-                      </DialogDescription>
-                    </DialogHeader>
-                    <Form {...emailForm}>
-                      <form onSubmit={emailForm.handleSubmit(updateEmail)} className="space-y-4">
-                        <FormField
-                          control={emailForm.control}
-                          name="email"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>{t('profile.email')}</FormLabel>
-                              <FormControl>
-                                <Input type="email" placeholder="email@example.com" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <DialogFooter>
-                          <Button type="submit">{t('profile.save')}</Button>
-                        </DialogFooter>
-                      </form>
-                    </Form>
-                  </DialogContent>
-                </Dialog>
               </div>
             </div>
-          </div>
 
-          {/* Subscription Plan Section */}
-          <div className="space-y-2 pt-4">
-            <h3 className="text-lg font-medium flex items-center">
-              <CreditCard className="mr-2 h-5 w-5" />
-              {t('profile.subscription')}
-            </h3>
-            <div className="bg-muted rounded-lg p-4">
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-                <div>
-                  <div className="flex items-center mb-2">
-                    <h4 className="font-semibold text-base mr-2">
-                      {t(`profile.plan.${subscriptionPlan}`)}
-                    </h4>
-                    <Badge className={getPlanBadgeColor()}>
-                      {subscriptionPlan.toUpperCase()}
-                    </Badge>
+            <div className="space-y-2 pt-4">
+              <h3 className="text-lg font-medium flex items-center">
+                <CreditCard className="mr-2 h-5 w-5" />
+                {t('profile.subscription')}
+              </h3>
+              <div className="bg-muted rounded-lg p-4">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                  <div>
+                    <div className="flex items-center mb-2">
+                      <h4 className="font-semibold text-base mr-2">
+                        {t(`profile.plan.${subscriptionPlan}`)}
+                      </h4>
+                      <Badge className={getPlanBadgeColor()}>
+                        {subscriptionPlan.toUpperCase()}
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      {t(`profile.plan.${subscriptionPlan}.desc`)}
+                    </p>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    {t(`profile.plan.${subscriptionPlan}.desc`)}
-                  </p>
-                </div>
-                <div className="flex flex-col items-start md:items-end mt-2 md:mt-0">
-                  <div className="flex items-center mb-2">
-                    <span className="text-sm text-muted-foreground mr-2">{t('profile.plan.status')}:</span>
-                    <Badge className={getStatusBadgeColor()}>
-                      {t(`profile.plan.${planStatus}`)}
-                    </Badge>
+                  <div className="flex flex-col items-start md:items-end mt-2 md:mt-0">
+                    <div className="flex items-center mb-2">
+                      <span className="text-sm text-muted-foreground mr-2">{t('profile.plan.status')}:</span>
+                      <Badge className={getStatusBadgeColor()}>
+                        {t(`profile.plan.${planStatus}`)}
+                      </Badge>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-2">
-                {subscriptionPlan !== 'premium' && (
-                  <Button size="sm">
-                    {t('profile.plan.upgrade')}
+                <div className="flex flex-col sm:flex-row gap-2">
+                  {subscriptionPlan !== 'premium' && (
+                    <Button size="sm">
+                      {t('profile.plan.upgrade')}
+                    </Button>
+                  )}
+                  <Button variant="outline" size="sm">
+                    {t('profile.plan.manage')}
                   </Button>
-                )}
-                <Button variant="outline" size="sm">
-                  {t('profile.plan.manage')}
-                </Button>
+                </div>
               </div>
             </div>
-          </div>
-        </CardContent>
-        <CardFooter className="flex flex-col sm:flex-row gap-3 justify-between">
-          <Button 
-            variant="outline"
-            onClick={() => navigate('/settings')}
-            className="w-full sm:w-auto"
-          >
-            <Settings className="mr-2 h-4 w-4" />
-            {t('profile.goto.settings')}
-          </Button>
-          <Button 
-            variant="destructive"
-            onClick={handleSignOut}
-            className="w-full sm:w-auto"
-          >
-            <LogOut className="mr-2 h-4 w-4" />
-            {t('nav.sign-out')}
-          </Button>
-        </CardFooter>
-      </Card>
-    </div>
+          </CardContent>
+          <CardFooter className="flex flex-col sm:flex-row gap-3 justify-between">
+            <Button 
+              variant="outline"
+              onClick={() => navigate('/settings')}
+              className="w-full sm:w-auto"
+            >
+              <Settings className="mr-2 h-4 w-4" />
+              {t('profile.goto.settings')}
+            </Button>
+            <Button 
+              variant="destructive"
+              onClick={handleSignOut}
+              className="w-full sm:w-auto"
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              {t('nav.sign-out')}
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
+    </>
   );
 };
 
