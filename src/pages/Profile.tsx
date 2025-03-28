@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
-import { User, Settings, LogOut, Pencil, Upload, CreditCard } from 'lucide-react';
+import { User, LogOut, Pencil, Upload, CreditCard } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { 
   Dialog,
@@ -327,15 +327,7 @@ const Profile = () => {
               </div>
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col sm:flex-row gap-3 justify-between">
-            <Button 
-              variant="outline"
-              onClick={() => navigate('/settings')}
-              className="w-full sm:w-auto"
-            >
-              <Settings className="mr-2 h-4 w-4" />
-              {t('profile.goto.settings')}
-            </Button>
+          <CardFooter className="flex justify-center">
             <Button 
               variant="destructive"
               onClick={handleSignOut}
