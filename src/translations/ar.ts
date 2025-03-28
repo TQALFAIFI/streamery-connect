@@ -36,6 +36,7 @@ const translations = {
   "profile.account": "إعدادات الحساب",
   "profile.info": "معلومات الملف الشخصي",
   "profile.email": "البريد الإلكتروني",
+  "profile.username": "اسم المستخدم",
   "profile.type": "نوع الحساب",
   "profile.streaming": "معلومات البث",
   "profile.streaming.desc": "إدارة إعدادات وتفضيلات البث من لوحة التحكم الخاصة بك.",
@@ -133,10 +134,13 @@ const translations = {
   
   // Authentication
   "auth.signIn": "تسجيل الدخول",
+  "auth.signUp": "تسجيل جديد",
   "auth.welcomeBack": "تسجيل الدخول أو التسجيل في الموقع",
   "auth.noAccount": "تسجيل في الموقع",
   "auth.backToHome": "العودة إلى الرئيسية",
-  "auth.haveAccount": "تسجيل الدخول"
+  "auth.haveAccount": "تسجيل الدخول",
+  "auth.username": "اسم المستخدم",
+  "auth.createAccount": "إنشاء حساب البث الخاص بك"
 };
 
 export default translations;

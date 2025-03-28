@@ -17,6 +17,11 @@ const formSchema = z.object({
   name: z.string().min(2, {
     message: "Name must be at least 2 characters."
   }),
+  username: z.string().min(3, {
+    message: "Username must be at least 3 characters."
+  }).regex(/^[a-zA-Z0-9_]+$/, {
+    message: "Username can only contain letters, numbers, and underscores."
+  }),
   email: z.string().email({
     message: "Please enter a valid email address."
   }),
@@ -40,6 +45,7 @@ const SignUp = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
+      username: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -51,12 +57,16 @@ const SignUp = () => {
     
     try {
       // Here you would implement your actual registration logic
-      // For example, sending a request to your backend API
-      
       console.log('Sign up attempt:', data);
       
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Store user data in localStorage
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('userEmail', data.email);
+      localStorage.setItem('userName', data.name);
+      localStorage.setItem('userUsername', data.username);
       
       // For demo purposes, just show success and redirect
       toast.success('Account created successfully!');
@@ -95,6 +105,24 @@ const SignUp = () => {
                       <Input 
                         type="text" 
                         placeholder="John Doe" 
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('auth.username')}</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="text" 
+                        placeholder="johndoe123" 
                         {...field} 
                       />
                     </FormControl>

@@ -13,6 +13,8 @@ const Profile = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
+  const [userUsername, setUserUsername] = useState<string | null>(null);
   
   useEffect(() => {
     // Check if user is authenticated
@@ -22,15 +24,22 @@ const Profile = () => {
       return;
     }
     
-    // Get user email from localStorage
+    // Get user info from localStorage
     const email = localStorage.getItem('userEmail');
+    const name = localStorage.getItem('userName');
+    const username = localStorage.getItem('userUsername');
+    
     setUserEmail(email);
+    setUserName(name);
+    setUserUsername(username);
   }, [navigate]);
 
   const handleSignOut = () => {
     // Clear authentication state
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userUsername');
     
     toast({
       title: "Signed out successfully",
@@ -44,11 +53,15 @@ const Profile = () => {
     navigate('/');
   };
 
-  // Function to get initials from email
-  const getInitials = (email: string | null) => {
-    if (!email) return 'U';
-    const parts = email.split('@');
-    return parts[0].charAt(0).toUpperCase();
+  // Function to get initials from username or email
+  const getInitials = () => {
+    if (userUsername) return userUsername.charAt(0).toUpperCase();
+    if (userName) return userName.charAt(0).toUpperCase();
+    if (userEmail) {
+      const parts = userEmail.split('@');
+      return parts[0].charAt(0).toUpperCase();
+    }
+    return 'U';
   };
 
   return (
@@ -59,34 +72,46 @@ const Profile = () => {
             <Avatar className="h-24 w-24">
               <AvatarImage src="" alt="Profile" />
               <AvatarFallback className="text-2xl font-medium bg-accent text-accent-foreground">
-                {getInitials(userEmail)}
+                {getInitials()}
               </AvatarFallback>
             </Avatar>
           </div>
-          <CardTitle className="text-2xl">{userEmail || 'User'}</CardTitle>
+          <CardTitle className="text-2xl">{userName || userUsername || userEmail || 'User'}</CardTitle>
           <CardDescription>
-            Account Settings
+            {userUsername ? `@${userUsername}` : 'Account Settings'}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <h3 className="text-lg font-medium">Profile Information</h3>
+            <h3 className="text-lg font-medium">{t('profile.info')}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {userName && (
+                <div className="space-y-1">
+                  <p className="text-sm text-muted-foreground">Name</p>
+                  <p className="font-medium">{userName}</p>
+                </div>
+              )}
+              {userUsername && (
+                <div className="space-y-1">
+                  <p className="text-sm text-muted-foreground">{t('profile.username')}</p>
+                  <p className="font-medium">@{userUsername}</p>
+                </div>
+              )}
               <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">Email</p>
+                <p className="text-sm text-muted-foreground">{t('profile.email')}</p>
                 <p className="font-medium">{userEmail || 'Not available'}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">Account Type</p>
+                <p className="text-sm text-muted-foreground">{t('profile.type')}</p>
                 <p className="font-medium">Streamer</p>
               </div>
             </div>
           </div>
           
           <div className="space-y-2">
-            <h3 className="text-lg font-medium">Streaming Information</h3>
+            <h3 className="text-lg font-medium">{t('profile.streaming')}</h3>
             <p className="text-sm text-muted-foreground">
-              Manage your streaming settings and preferences from your dashboard.
+              {t('profile.streaming.desc')}
             </p>
             <Button 
               variant="outline" 
@@ -94,7 +119,7 @@ const Profile = () => {
               onClick={() => navigate('/dashboard')}
             >
               <Settings className="mr-2 h-4 w-4" />
-              Go to Dashboard
+              {t('profile.goto.dashboard')}
             </Button>
           </div>
         </CardContent>
@@ -105,7 +130,7 @@ const Profile = () => {
             className="w-full sm:w-auto"
           >
             <Settings className="mr-2 h-4 w-4" />
-            Account Settings
+            {t('profile.goto.settings')}
           </Button>
           <Button 
             variant="destructive"

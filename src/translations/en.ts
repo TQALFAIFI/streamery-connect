@@ -36,6 +36,7 @@ const translations = {
   "profile.account": "Account Settings",
   "profile.info": "Profile Information",
   "profile.email": "Email",
+  "profile.username": "Username",
   "profile.type": "Account Type",
   "profile.streaming": "Streaming Information",
   "profile.streaming.desc": "Manage your streaming settings and preferences from your dashboard.",
@@ -67,10 +68,13 @@ const translations = {
   
   // Authentication
   "auth.signIn": "Sign In",
+  "auth.signUp": "Sign Up",
   "auth.welcomeBack": "Sign in or register on the website",
   "auth.noAccount": "Register on the website",
   "auth.backToHome": "Back to Home",
-  "auth.haveAccount": "Sign In"
+  "auth.haveAccount": "Sign In",
+  "auth.username": "Username",
+  "auth.createAccount": "Create your streaming account"
 };
 
 export default translations;
