@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -7,6 +6,12 @@ import { Cast, Menu, User, X } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 
 interface NavLinkProps {
   to: string;
@@ -40,7 +45,6 @@ const NavLink = ({ to, children, className }: NavLinkProps) => {
   );
 };
 
-// Check if user is authenticated
 const useIsLoggedIn = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   
@@ -49,10 +53,8 @@ const useIsLoggedIn = () => {
       setIsLoggedIn(localStorage.getItem('isAuthenticated') === 'true');
     };
     
-    // Check on mount
     checkAuth();
     
-    // Listen for storage events to update UI when authentication state changes
     window.addEventListener('storage', checkAuth);
     
     return () => {
@@ -86,7 +88,6 @@ const Navbar = () => {
   }, [location]);
 
   useEffect(() => {
-    // Get user email from localStorage
     if (isLoggedIn) {
       setUserEmail(localStorage.getItem('userEmail'));
     } else {
@@ -95,18 +96,12 @@ const Navbar = () => {
   }, [isLoggedIn]);
 
   const handleSignOut = () => {
-    // Clear authentication state
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userEmail');
-    
-    // Trigger a storage event to update UI components
     window.dispatchEvent(new Event('storage'));
-    
-    // Navigate to home page
     navigate('/');
   };
 
-  // Function to get initials from email
   const getInitials = (email: string | null) => {
     if (!email) return 'U';
     const parts = email.split('@');
@@ -133,7 +128,6 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-2">
           <NavLink to="/">{t('nav.home')}</NavLink>
           
@@ -148,25 +142,29 @@ const Navbar = () => {
           
           {isLoggedIn ? (
             <div className="ml-4 flex items-center">
-              <Button 
-                variant="outline"
-                size="icon"
-                className="rounded-full"
-                onClick={() => navigate('/profile')}
-              >
-                <Avatar className="h-8 w-8">
-                  <AvatarFallback className="text-xs font-medium">
-                    {getInitials(userEmail)}
-                  </AvatarFallback>
-                </Avatar>
-              </Button>
-              <Button 
-                variant="ghost"
-                className="ml-2"
-                onClick={handleSignOut}
-              >
-                {t('nav.sign-out')}
-              </Button>
+              <ContextMenu>
+                <ContextMenuTrigger>
+                  <Button 
+                    variant="outline"
+                    size="icon"
+                    className="rounded-full cursor-pointer"
+                  >
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback className="text-xs font-medium">
+                        {getInitials(userEmail)}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </ContextMenuTrigger>
+                <ContextMenuContent className="w-48">
+                  <ContextMenuItem onClick={() => navigate('/settings')}>
+                    {language === 'ar' ? 'إعدادات الحساب' : 'Account Settings'}
+                  </ContextMenuItem>
+                  <ContextMenuItem onClick={handleSignOut}>
+                    {language === 'ar' ? 'تسجيل الخروج' : 'Sign Out'}
+                  </ContextMenuItem>
+                </ContextMenuContent>
+              </ContextMenu>
             </div>
           ) : (
             <Button 
@@ -179,23 +177,33 @@ const Navbar = () => {
           )}
         </nav>
 
-        {/* Mobile Menu Toggle */}
         <div className="md:hidden flex items-center gap-2">
           <LanguageSwitcher />
           
           {isLoggedIn && (
-            <Button 
-              variant="outline"
-              size="icon"
-              className="rounded-full w-8 h-8"
-              onClick={() => navigate('/profile')}
-            >
-              <Avatar className="h-8 w-8">
-                <AvatarFallback className="text-xs font-medium">
-                  {getInitials(userEmail)}
-                </AvatarFallback>
-              </Avatar>
-            </Button>
+            <ContextMenu>
+              <ContextMenuTrigger>
+                <Button 
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full w-8 h-8 cursor-pointer"
+                >
+                  <Avatar className="h-8 w-8">
+                    <AvatarFallback className="text-xs font-medium">
+                      {getInitials(userEmail)}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </ContextMenuTrigger>
+              <ContextMenuContent className="w-48">
+                <ContextMenuItem onClick={() => navigate('/settings')}>
+                  {language === 'ar' ? 'إعدادات الحساب' : 'Account Settings'}
+                </ContextMenuItem>
+                <ContextMenuItem onClick={handleSignOut}>
+                  {language === 'ar' ? 'تسجيل الخروج' : 'Sign Out'}
+                </ContextMenuItem>
+              </ContextMenuContent>
+            </ContextMenu>
           )}
           
           <button
@@ -212,7 +220,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
       {isMobileMenuOpen && (
         <div className="absolute top-full left-0 right-0 bg-background/95 backdrop-blur-lg shadow-lg md:hidden animate-fade-in">
           <div className="container py-4 flex flex-col space-y-3">
