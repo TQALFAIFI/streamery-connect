@@ -5,11 +5,17 @@ import { Button } from '@/components/ui/button';
 import Navbar from '@/components/layout/Navbar';
 import { Monitor, Zap, Link2, Shield } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { SignedIn, SignedOut } from '@clerk/clerk-react';
+
+// For demo purposes, we'll assume a user is logged in if they're on dashboard or settings pages
+const useIsLoggedIn = () => {
+  const location = window.location.pathname;
+  return location === '/dashboard' || location === '/settings';
+};
 
 const Index = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const isLoggedIn = useIsLoggedIn();
 
   return (
     <div className="min-h-screen flex flex-col relative bg-gradient-to-b from-background to-background via-accent/5">
@@ -36,16 +42,15 @@ const Index = () => {
               </p>
               
               <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-up" style={{animationDelay: '300ms'}}>
-                <SignedIn>
+                {isLoggedIn ? (
                   <Button size="lg" onClick={() => navigate('/dashboard')}>
                     {t('nav.dashboard')}
                   </Button>
-                </SignedIn>
-                <SignedOut>
+                ) : (
                   <Button size="lg" onClick={() => navigate('/sign-in')}>
                     {t('nav.get-started')}
                   </Button>
-                </SignedOut>
+                )}
                 <Button size="lg" variant="outline">
                   {t('nav.learn-more')}
                 </Button>
@@ -126,7 +131,7 @@ const Index = () => {
                   </p>
                 </div>
                 
-                <SignedIn>
+                {isLoggedIn ? (
                   <Button 
                     size="lg" 
                     variant="secondary"
@@ -135,8 +140,7 @@ const Index = () => {
                   >
                     {t('home.cta.button')}
                   </Button>
-                </SignedIn>
-                <SignedOut>
+                ) : (
                   <Button 
                     size="lg" 
                     variant="secondary"
@@ -145,7 +149,7 @@ const Index = () => {
                   >
                     {t('home.cta.button')}
                   </Button>
-                </SignedOut>
+                )}
               </div>
             </div>
           </div>
