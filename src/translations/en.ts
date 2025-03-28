@@ -50,6 +50,22 @@ const translations = {
   "profile.edit.email": "Edit Email",
   "profile.edit.email.desc": "Update your email address. This will be used for notifications and account recovery.",
   
+  // Subscription and Plans
+  "profile.subscription": "Subscription Plan",
+  "profile.subscription.desc": "Your current subscription plan and status.",
+  "profile.plan.free": "Free Plan",
+  "profile.plan.free.desc": "Basic streaming features with standard quality.",
+  "profile.plan.pro": "Pro Plan",
+  "profile.plan.pro.desc": "Advanced features with HD streaming quality.",
+  "profile.plan.premium": "Premium Plan",
+  "profile.plan.premium.desc": "All features unlocked with 4K streaming support.",
+  "profile.plan.upgrade": "Upgrade Plan",
+  "profile.plan.manage": "Manage Subscription",
+  "profile.plan.status": "Plan Status",
+  "profile.plan.active": "Active",
+  "profile.plan.expired": "Expired",
+  "profile.plan.trial": "Trial",
+  
   // Dashboard
   "dashboard.title": "Streaming Dashboard",
   "dashboard.tabs.stream": "Stream",

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
-import { User, Settings, LogOut, Pencil, Upload } from 'lucide-react';
+import { User, Settings, LogOut, Pencil, Upload, CreditCard } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { 
   Dialog,
@@ -28,6 +28,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
+import { Badge } from '@/components/ui/badge';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -38,6 +39,8 @@ const Profile = () => {
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [editUsernameOpen, setEditUsernameOpen] = useState(false);
   const [editEmailOpen, setEditEmailOpen] = useState(false);
+  const [subscriptionPlan, setSubscriptionPlan] = useState<'free' | 'pro' | 'premium'>('free');
+  const [planStatus, setPlanStatus] = useState<'active' | 'expired' | 'trial'>('active');
   
   useEffect(() => {
     // Check if user is authenticated
@@ -51,10 +54,14 @@ const Profile = () => {
     const email = localStorage.getItem('userEmail');
     const username = localStorage.getItem('userUsername');
     const profilePic = localStorage.getItem('profilePicture');
+    const plan = localStorage.getItem('subscriptionPlan') as 'free' | 'pro' | 'premium' || 'free';
+    const status = localStorage.getItem('planStatus') as 'active' | 'expired' | 'trial' || 'active';
     
     setUserEmail(email);
     setUserUsername(username);
     setProfilePicture(profilePic);
+    setSubscriptionPlan(plan);
+    setPlanStatus(status);
   }, [navigate]);
 
   const handleSignOut = () => {
@@ -143,6 +150,30 @@ const Profile = () => {
     },
   });
 
+  // Helper function to get plan badge color
+  const getPlanBadgeColor = () => {
+    switch (subscriptionPlan) {
+      case 'premium':
+        return 'bg-purple-600 hover:bg-purple-700';
+      case 'pro':
+        return 'bg-blue-600 hover:bg-blue-700';
+      default:
+        return 'bg-gray-600 hover:bg-gray-700';
+    }
+  };
+
+  // Helper function to get status badge color
+  const getStatusBadgeColor = () => {
+    switch (planStatus) {
+      case 'active':
+        return 'bg-green-600 hover:bg-green-700';
+      case 'trial':
+        return 'bg-yellow-600 hover:bg-yellow-700';
+      default:
+        return 'bg-red-600 hover:bg-red-700';
+    }
+  };
+
   return (
     <div className="container max-w-4xl mx-auto pt-28 pb-16 px-4">
       <Card className="w-full">
@@ -175,6 +206,7 @@ const Profile = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+          {/* Profile Information Section */}
           <div className="space-y-2">
             <h3 className="text-lg font-medium">{t('profile.info')}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -261,6 +293,49 @@ const Profile = () => {
                     </Form>
                   </DialogContent>
                 </Dialog>
+              </div>
+            </div>
+          </div>
+
+          {/* Subscription Plan Section */}
+          <div className="space-y-2 pt-4">
+            <h3 className="text-lg font-medium flex items-center">
+              <CreditCard className="mr-2 h-5 w-5" />
+              {t('profile.subscription')}
+            </h3>
+            <div className="bg-muted rounded-lg p-4">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                <div>
+                  <div className="flex items-center mb-2">
+                    <h4 className="font-semibold text-base mr-2">
+                      {t(`profile.plan.${subscriptionPlan}`)}
+                    </h4>
+                    <Badge className={getPlanBadgeColor()}>
+                      {subscriptionPlan.toUpperCase()}
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    {t(`profile.plan.${subscriptionPlan}.desc`)}
+                  </p>
+                </div>
+                <div className="flex flex-col items-start md:items-end mt-2 md:mt-0">
+                  <div className="flex items-center mb-2">
+                    <span className="text-sm text-muted-foreground mr-2">{t('profile.plan.status')}:</span>
+                    <Badge className={getStatusBadgeColor()}>
+                      {t(`profile.plan.${planStatus}`)}
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-2">
+                {subscriptionPlan !== 'premium' && (
+                  <Button size="sm">
+                    {t('profile.plan.upgrade')}
+                  </Button>
+                )}
+                <Button variant="outline" size="sm">
+                  {t('profile.plan.manage')}
+                </Button>
               </div>
             </div>
           </div>
