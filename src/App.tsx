@@ -13,12 +13,9 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-// For demo purposes, we'll use a simple approach
-// In a real app, you would check if the user is logged in via context or state management
+// Check if user is authenticated by checking localStorage
 const isAuthenticated = () => {
-  // This would be replaced with actual authentication logic
-  // For now, we'll return false (user is not logged in)
-  return false;
+  return localStorage.getItem('isAuthenticated') === 'true';
 };
 
 // Protected route component

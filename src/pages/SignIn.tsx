@@ -5,7 +5,6 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Monitor } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
@@ -45,18 +44,30 @@ const SignIn = () => {
     try {
       // Here you would implement your actual authentication logic
       // For example, sending a request to your backend API
-      
       console.log('Sign in attempt:', data);
       
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // For demo purposes, just show success and redirect
-      toast.success('Sign in successful!');
-      navigate('/dashboard');
+      // For demo purposes, we'll consider these credentials valid
+      // In a real app, you would validate against your database
+      const isValidCredentials = true; // Replace with actual validation
+      
+      if (isValidCredentials) {
+        // Store auth state in localStorage for demo purposes
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userEmail', data.email);
+        
+        toast.success(t('auth.signInSuccess') || 'Sign in successful!');
+        
+        // Redirect to dashboard after successful login
+        navigate('/dashboard');
+      } else {
+        toast.error(t('auth.invalidCredentials') || 'Invalid email or password');
+      }
     } catch (error) {
       console.error('Sign in error:', error);
-      toast.error('Failed to sign in. Please check your credentials.');
+      toast.error(t('auth.signInError') || 'Failed to sign in. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }

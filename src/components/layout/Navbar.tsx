@@ -39,10 +39,27 @@ const NavLink = ({ to, children, className }: NavLinkProps) => {
   );
 };
 
-// For demo purposes, we'll assume a user is logged in if they're on dashboard or settings pages
+// Check if user is authenticated
 const useIsLoggedIn = () => {
-  const location = useLocation();
-  return location.pathname === '/dashboard' || location.pathname === '/settings';
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  useEffect(() => {
+    const checkAuth = () => {
+      setIsLoggedIn(localStorage.getItem('isAuthenticated') === 'true');
+    };
+    
+    // Check on mount
+    checkAuth();
+    
+    // Listen for storage events to update UI when authentication state changes
+    window.addEventListener('storage', checkAuth);
+    
+    return () => {
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, []);
+  
+  return isLoggedIn;
 };
 
 const Navbar = () => {
@@ -67,7 +84,14 @@ const Navbar = () => {
   }, [location]);
 
   const handleSignOut = () => {
-    // Add any sign out logic here
+    // Clear authentication state
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('userEmail');
+    
+    // Trigger a storage event to update UI components
+    window.dispatchEvent(new Event('storage'));
+    
+    // Navigate to home page
     navigate('/');
   };
 
@@ -119,7 +143,7 @@ const Navbar = () => {
                 className="ml-2"
                 onClick={handleSignOut}
               >
-                Sign Out
+                {t('nav.sign-out') || 'Sign Out'}
               </Button>
             </div>
           ) : (
@@ -191,7 +215,7 @@ const Navbar = () => {
                   className="mt-2"
                   onClick={handleSignOut}
                 >
-                  Sign Out
+                  {t('nav.sign-out') || 'Sign Out'}
                 </Button>
               </>
             )}

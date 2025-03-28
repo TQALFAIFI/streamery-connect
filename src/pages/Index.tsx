@@ -6,10 +6,27 @@ import Navbar from '@/components/layout/Navbar';
 import { Monitor, Zap, Link2, Shield } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-// For demo purposes, we'll assume a user is logged in if they're on dashboard or settings pages
+// Get authentication state from localStorage
 const useIsLoggedIn = () => {
-  const location = window.location.pathname;
-  return location === '/dashboard' || location === '/settings';
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  
+  React.useEffect(() => {
+    const checkAuth = () => {
+      setIsLoggedIn(localStorage.getItem('isAuthenticated') === 'true');
+    };
+    
+    // Check on mount
+    checkAuth();
+    
+    // Listen for storage events
+    window.addEventListener('storage', checkAuth);
+    
+    return () => {
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, []);
+  
+  return isLoggedIn;
 };
 
 const Index = () => {
