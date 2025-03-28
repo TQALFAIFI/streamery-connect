@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -7,11 +8,11 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface NavLinkProps {
   to: string;
@@ -142,8 +143,8 @@ const Navbar = () => {
           
           {isLoggedIn ? (
             <div className="ml-4 flex items-center">
-              <ContextMenu>
-                <ContextMenuTrigger>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
                   <Button 
                     variant="outline"
                     size="icon"
@@ -155,16 +156,16 @@ const Navbar = () => {
                       </AvatarFallback>
                     </Avatar>
                   </Button>
-                </ContextMenuTrigger>
-                <ContextMenuContent className="w-48">
-                  <ContextMenuItem onClick={() => navigate('/settings')}>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem onClick={() => navigate('/settings')}>
                     {language === 'ar' ? 'إعدادات الحساب' : 'Account Settings'}
-                  </ContextMenuItem>
-                  <ContextMenuItem onClick={handleSignOut}>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleSignOut}>
                     {language === 'ar' ? 'تسجيل الخروج' : 'Sign Out'}
-                  </ContextMenuItem>
-                </ContextMenuContent>
-              </ContextMenu>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           ) : (
             <Button 
@@ -181,8 +182,8 @@ const Navbar = () => {
           <LanguageSwitcher />
           
           {isLoggedIn && (
-            <ContextMenu>
-              <ContextMenuTrigger>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
                 <Button 
                   variant="outline"
                   size="icon"
@@ -194,16 +195,16 @@ const Navbar = () => {
                     </AvatarFallback>
                   </Avatar>
                 </Button>
-              </ContextMenuTrigger>
-              <ContextMenuContent className="w-48">
-                <ContextMenuItem onClick={() => navigate('/settings')}>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={() => navigate('/settings')}>
                   {language === 'ar' ? 'إعدادات الحساب' : 'Account Settings'}
-                </ContextMenuItem>
-                <ContextMenuItem onClick={handleSignOut}>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleSignOut}>
                   {language === 'ar' ? 'تسجيل الخروج' : 'Sign Out'}
-                </ContextMenuItem>
-              </ContextMenuContent>
-            </ContextMenu>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
           
           <button
