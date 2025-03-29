@@ -1,10 +1,11 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/layout/Navbar';
 import { Monitor, Zap, Link2, Shield } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 // Get authentication state from localStorage
 const useIsLoggedIn = () => {
@@ -33,6 +34,21 @@ const Index = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const isLoggedIn = useIsLoggedIn();
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setUserEmail(localStorage.getItem('userEmail'));
+    } else {
+      setUserEmail(null);
+    }
+  }, [isLoggedIn]);
+
+  const getInitials = (email: string | null) => {
+    if (!email) return 'U';
+    const parts = email.split('@');
+    return parts[0].charAt(0).toUpperCase();
+  };
 
   return (
     <div className="min-h-screen flex flex-col relative bg-gradient-to-b from-background to-background via-accent/5">
@@ -48,6 +64,16 @@ const Index = () => {
               <div className="inline-flex items-center px-3 py-1 mb-6 rounded-full bg-accent/10 border border-accent/20 animate-fade-in">
                 <span className="text-xs font-medium text-accent">{t('app.tagline')}</span>
               </div>
+              
+              {isLoggedIn && (
+                <div className="mb-6 animate-fade-in">
+                  <Avatar className="h-20 w-20 border-2 border-accent">
+                    <AvatarFallback className="text-2xl font-medium bg-accent/10 text-accent">
+                      {getInitials(userEmail)}
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+              )}
               
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight animate-fade-up" style={{animationDelay: '100ms'}}>
                 {t('app.slogan').split(' ').slice(0, -1).join(' ')} 
