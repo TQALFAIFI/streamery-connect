@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/layout/Navbar';
 import { Monitor, Zap, Link2, Shield } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 // Get authentication state from localStorage
 const useIsLoggedIn = () => {
@@ -35,12 +34,15 @@ const Index = () => {
   const { t } = useLanguage();
   const isLoggedIn = useIsLoggedIn();
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
 
   useEffect(() => {
     if (isLoggedIn) {
       setUserEmail(localStorage.getItem('userEmail'));
+      setProfilePicture(localStorage.getItem('profilePicture'));
     } else {
       setUserEmail(null);
+      setProfilePicture(null);
     }
   }, [isLoggedIn]);
 
@@ -68,6 +70,7 @@ const Index = () => {
               {isLoggedIn && (
                 <div className="mb-6 animate-fade-in">
                   <Avatar className="h-20 w-20 border-2 border-accent">
+                    <AvatarImage src={profilePicture || ""} alt="Profile" />
                     <AvatarFallback className="text-2xl font-medium bg-accent/10 text-accent">
                       {getInitials(userEmail)}
                     </AvatarFallback>
