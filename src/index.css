@@ -147,6 +147,17 @@
   transition: opacity 300ms, transform 300ms;
 }
 
+/* Custom tabs styling */
+.tabs-list {
+  @apply p-1 rounded-xl bg-muted/50 backdrop-blur-sm border border-border/20;
+}
+
+.tabs-trigger {
+  @apply px-6 py-3 text-base font-medium rounded-lg transition-all;
+  @apply data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-accent;
+  @apply hover:bg-background/50;
+}
+
 /* RTL Language Support - Fixed syntax */
 [dir="rtl"] .ml-4 {
   margin-right: 1rem;

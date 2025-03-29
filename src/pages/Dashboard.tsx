@@ -51,10 +51,25 @@ const Dashboard = () => {
           </div>
           
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-            <TabsList className="mb-6">
-              <TabsTrigger value="stream">{t('dashboard.tabs.stream')}</TabsTrigger>
-              <TabsTrigger value="analytics">{t('dashboard.tabs.analytics')}</TabsTrigger>
-              <TabsTrigger value="destinations">{t('dashboard.tabs.destinations')}</TabsTrigger>
+            <TabsList className="mb-6 w-full h-14 p-1 bg-muted/50 backdrop-blur-sm border border-border/20 rounded-xl">
+              <TabsTrigger 
+                value="stream" 
+                className="text-base py-3 flex-1 rounded-lg transition-all data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:scale-[1.02]"
+              >
+                {t('dashboard.tabs.stream')}
+              </TabsTrigger>
+              <TabsTrigger 
+                value="analytics" 
+                className="text-base py-3 flex-1 rounded-lg transition-all data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:scale-[1.02]"
+              >
+                {t('dashboard.tabs.analytics')}
+              </TabsTrigger>
+              <TabsTrigger 
+                value="destinations" 
+                className="text-base py-3 flex-1 rounded-lg transition-all data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:scale-[1.02]"
+              >
+                {t('dashboard.tabs.destinations')}
+              </TabsTrigger>
             </TabsList>
             
             <TabsContent value="stream">
