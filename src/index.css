@@ -155,7 +155,6 @@
 .tabs-trigger {
   @apply px-6 py-3 text-base font-medium rounded-lg transition-all;
   @apply data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-accent;
-  @apply hover:bg-background/50;
 }
 
 /* RTL Language Support - Fixed syntax */

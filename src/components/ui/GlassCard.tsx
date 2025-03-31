@@ -11,7 +11,7 @@ interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
 const GlassCard = ({
   children,
   className,
-  hoverEffect = true,
+  hoverEffect = false, // Changed default to false
   ...props
 }: GlassCardProps) => {
   return (
