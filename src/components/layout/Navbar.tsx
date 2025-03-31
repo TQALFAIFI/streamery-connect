@@ -75,6 +75,7 @@ const Navbar = () => {
   const { t, language } = useLanguage();
   const isLoggedIn = useIsLoggedIn();
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -92,14 +93,17 @@ const Navbar = () => {
   useEffect(() => {
     if (isLoggedIn) {
       setUserEmail(localStorage.getItem('userEmail'));
+      setProfilePicture(localStorage.getItem('profilePicture'));
     } else {
       setUserEmail(null);
+      setProfilePicture(null);
     }
   }, [isLoggedIn]);
 
   const handleSignOut = () => {
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('profilePicture');
     window.dispatchEvent(new Event('storage'));
     navigate('/');
   };
@@ -149,13 +153,20 @@ const Navbar = () => {
                   <Button 
                     variant="outline"
                     size="icon"
-                    className="rounded-full cursor-pointer"
+                    className="rounded-full cursor-pointer overflow-hidden p-0 h-10 w-10 border-2 hover:border-accent transition-colors"
                   >
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={userEmail ? localStorage.getItem('profilePicture') || "" : ""} alt="Profile" />
-                      <AvatarFallback className="text-xs font-medium">
-                        {getInitials(userEmail)}
-                      </AvatarFallback>
+                    <Avatar className="h-full w-full">
+                      {profilePicture ? (
+                        <AvatarImage 
+                          src={profilePicture} 
+                          alt="Profile"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <AvatarFallback className="text-xs font-medium">
+                          {getInitials(userEmail)}
+                        </AvatarFallback>
+                      )}
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
@@ -190,13 +201,20 @@ const Navbar = () => {
                 <Button 
                   variant="outline"
                   size="icon"
-                  className="rounded-full w-8 h-8 cursor-pointer"
+                  className="rounded-full overflow-hidden p-0 h-9 w-9 border-2 hover:border-accent transition-colors"
                 >
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={userEmail ? localStorage.getItem('profilePicture') || "" : ""} alt="Profile" />
-                    <AvatarFallback className="text-xs font-medium">
-                      {getInitials(userEmail)}
-                    </AvatarFallback>
+                  <Avatar className="h-full w-full">
+                    {profilePicture ? (
+                      <AvatarImage 
+                        src={profilePicture} 
+                        alt="Profile"
+                        className="object-cover"
+                      />
+                    ) : (
+                      <AvatarFallback className="text-xs font-medium">
+                        {getInitials(userEmail)}
+                      </AvatarFallback>
+                    )}
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
