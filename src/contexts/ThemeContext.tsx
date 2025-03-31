@@ -12,18 +12,14 @@ const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
-    // Check for stored theme or system preference
+    // Check for stored theme or use dark as default
     const storedTheme = localStorage.getItem('theme');
-    if (storedTheme === 'dark' || storedTheme === 'light') {
+    if (storedTheme === 'light' || storedTheme === 'dark') {
       return storedTheme;
     }
     
-    // Check system preference
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
-    
-    return 'light';
+    // Use dark as default instead of checking system preference
+    return 'dark';
   });
 
   useEffect(() => {
