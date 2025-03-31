@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -5,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Cast, Menu, User, X } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import ThemeToggle from './ThemeToggle';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -138,6 +140,7 @@ const Navbar = () => {
           )}
           
           <LanguageSwitcher />
+          <ThemeToggle />
           
           {isLoggedIn ? (
             <div className="ml-4 flex items-center">
@@ -149,6 +152,7 @@ const Navbar = () => {
                     className="rounded-full cursor-pointer"
                   >
                     <Avatar className="h-8 w-8">
+                      <AvatarImage src={userEmail ? localStorage.getItem('profilePicture') || "" : ""} alt="Profile" />
                       <AvatarFallback className="text-xs font-medium">
                         {getInitials(userEmail)}
                       </AvatarFallback>
@@ -178,6 +182,7 @@ const Navbar = () => {
 
         <div className="md:hidden flex items-center gap-2">
           <LanguageSwitcher />
+          <ThemeToggle />
           
           {isLoggedIn && (
             <DropdownMenu>
@@ -188,6 +193,7 @@ const Navbar = () => {
                   className="rounded-full w-8 h-8 cursor-pointer"
                 >
                   <Avatar className="h-8 w-8">
+                    <AvatarImage src={userEmail ? localStorage.getItem('profilePicture') || "" : ""} alt="Profile" />
                     <AvatarFallback className="text-xs font-medium">
                       {getInitials(userEmail)}
                     </AvatarFallback>
