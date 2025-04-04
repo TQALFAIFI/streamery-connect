@@ -101,14 +101,18 @@ const PlanDialog = ({ open, onOpenChange }: PlanDialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-3xl">
+      <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <DialogTitle className="text-2xl">{t('upgrade.title') || 'Choose Your Plan'}</DialogTitle>
           <DialogDescription>
             {t('upgrade.description') || 'Select the plan that best fits your needs.'}
           </DialogDescription>
         </DialogHeader>
-        <RadioGroup value={selectedPlan} onValueChange={setSelectedPlan} className="gap-4">
+        <RadioGroup 
+          value={selectedPlan} 
+          onValueChange={setSelectedPlan} 
+          className="flex flex-col gap-4"
+        >
           {plans.map((plan) => (
             <div key={plan.id} className="relative">
               {plan.recommended && (
@@ -118,10 +122,10 @@ const PlanDialog = ({ open, onOpenChange }: PlanDialogProps) => {
               )}
               <Label
                 htmlFor={plan.id}
-                className="cursor-pointer"
+                className="cursor-pointer w-full"
               >
                 <GlassCard
-                  className={`p-6 h-full ${
+                  className={`p-6 ${
                     selectedPlan === plan.id
                       ? 'ring-2 ring-primary ring-offset-2 ring-offset-background'
                       : ''
