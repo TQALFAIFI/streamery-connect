@@ -15,6 +15,7 @@ import { Check, Sparkles, Globe, Zap } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Badge } from '@/components/ui/badge';
 import GlassCard from '@/components/ui/GlassCard';
+import { useToast } from '@/hooks/use-toast';
 
 interface PlanOption {
   id: string;
@@ -33,6 +34,7 @@ interface PlanDialogProps {
 
 const PlanDialog = ({ open, onOpenChange }: PlanDialogProps) => {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const [selectedPlan, setSelectedPlan] = React.useState('pro');
 
   const plans: PlanOption[] = [
@@ -80,8 +82,21 @@ const PlanDialog = ({ open, onOpenChange }: PlanDialogProps) => {
 
   const handleSubscribe = () => {
     console.log(`Subscribing to ${selectedPlan} plan`);
+    
+    // Update the user's subscription plan in localStorage
+    localStorage.setItem('subscriptionPlan', selectedPlan);
+    localStorage.setItem('planStatus', 'active');
+    
+    // Show success toast
+    toast({
+      title: t('upgrade.success') || 'Subscription Updated',
+      description: t('upgrade.success.description') || `You've successfully subscribed to the ${selectedPlan} plan`,
+    });
+    
     onOpenChange(false);
-    // Here you would typically integrate with a payment provider like Stripe
+    
+    // Refresh the page to show the updated plan
+    window.dispatchEvent(new Event('storage'));
   };
 
   return (

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -163,6 +162,18 @@ const Profile = () => {
         return 'bg-red-600 hover:bg-red-700';
     }
   };
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const plan = localStorage.getItem('subscriptionPlan') as 'free' | 'pro' | 'premium' || 'free';
+      const status = localStorage.getItem('planStatus') as 'active' | 'expired' | 'trial' || 'active';
+      setSubscriptionPlan(plan);
+      setPlanStatus(status);
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   return (
     <>
