@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -29,6 +30,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { Badge } from '@/components/ui/badge';
 import Navbar from '@/components/layout/Navbar';
+import PlanDialog from '@/components/ui/PlanDialog';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -41,6 +43,7 @@ const Profile = () => {
   const [editEmailOpen, setEditEmailOpen] = useState(false);
   const [subscriptionPlan, setSubscriptionPlan] = useState<'free' | 'pro' | 'premium'>('free');
   const [planStatus, setPlanStatus] = useState<'active' | 'expired' | 'trial'>('active');
+  const [planDialogOpen, setPlanDialogOpen] = useState(false);
   
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
@@ -316,7 +319,7 @@ const Profile = () => {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2">
                   {subscriptionPlan !== 'premium' && (
-                    <Button size="sm">
+                    <Button size="sm" onClick={() => setPlanDialogOpen(true)}>
                       {t('profile.plan.upgrade')}
                     </Button>
                   )}
@@ -338,6 +341,12 @@ const Profile = () => {
             </Button>
           </CardFooter>
         </Card>
+
+        {/* Plan Selection Dialog */}
+        <PlanDialog 
+          open={planDialogOpen} 
+          onOpenChange={setPlanDialogOpen} 
+        />
       </div>
     </>
   );
